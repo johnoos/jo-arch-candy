@@ -245,7 +245,10 @@
     .top-panel { display: flex; justify-content: center; align-items: center; min-height: 80px; padding: 20px; }
     .top-panel-table { border-collapse: separate !important; border-spacing: 0; width: auto !important; margin: 0 auto; }
     .logo-cell img { max-height: 80px; width: auto; }
-
+    .desktop-pipe {
+      /* Hide by default for Mobile */
+      display: none; 
+    }
     @media (max-width: 767px) {
       .top-panel { justify-content: space-between; padding: 10px 15px; }
       .top-panel-table { border-spacing: 12px 0 !important; }
@@ -291,6 +294,13 @@
       .logo-cell {
         width: 100px; /* Constrain the cell width to match the smaller logo */
         padding-right: 20px;
+      }
+      .desktop-pipe {
+        /* Reveal only on Desktop */
+        display: inline; 
+      }
+      .title-line-1 {
+        font-size: 20px; /* Ensure it scales up for the larger screen */
       }
       
       /* SKIN: If you wanted to change colors or font sizes for desktop, 
