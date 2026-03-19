@@ -674,12 +674,15 @@ header {
   left: 0;
   width: 100vw;
   height: 100vh;
-  display: flex;
   flex-direction: column;
-  z-index: 20000;
   overflow: hidden;
+  display: none; /* CHANGE THIS FROM FLEX TO NONE */
+  position: fixed;
+  z-index: 2000; 
 }
-
+.pdf-viewer-container.active { 
+      display: flex !important; 
+}
 .pdf-viewer-container iframe {
   flex-grow: 1;
   border: none;

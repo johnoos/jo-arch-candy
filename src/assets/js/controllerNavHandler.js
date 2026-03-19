@@ -40,20 +40,26 @@ navRoot?.addEventListener('click', (e) => {
   }
 });
 
-  // Main stage click (PDF or other docs)
-  mainStage?.addEventListener('click', (e) => {
-    const pdfBtn = e.target.closest('button[data-type="pdf"]');
-    if (pdfBtn) {
-      const { url, title } = pdfBtn.dataset;
+  // controllerNavHandler.js - Refactored Main Stage Listener
+mainStage?.addEventListener('click', (e) => {
+  // 1. Check for PDF View Buttons
+  // Look for the class we used in Region 4: .btn-view
+  const viewBtn = e.target.closest('.btn-view'); 
+  
+  if (viewBtn) {
+    const { url, title } = viewBtn.dataset;
+    if (url) {
       showSpinner();
       openPdfViewer(url, title);
       return;
     }
+  }
 
-    const viewBtn = e.target.closest('button[data-slug]');
-    if (viewBtn) {
-      const { category, slug } = viewBtn.dataset;
-      loadFragment(`/fragments/docs/${category}/${slug}.html`);
-    }
-  });
+  // 2. Check for Download Buttons (If you want JS to handle these too)
+  const downloadBtn = e.target.closest('.btn-download');
+  if (downloadBtn) {
+    // Standard download behavior or custom logic
+    return;
+  }
+});
 });

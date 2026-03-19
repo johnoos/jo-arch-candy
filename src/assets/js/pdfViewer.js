@@ -1,20 +1,43 @@
-export function openPdfViewer(url, title = 'Document Viewer') {
-  const stage = document.getElementById('content-panel-container');
-  
-  // 1. Update History (Fixes the Back Button)
-  window.history.pushState({ path: 'pdf', url, title }, '', `#view/${title.slugify()}`);
+import { hideSpinner } from './utils.js';
 
-  // 2. Inject the Viewer Shell
-  stage.innerHTML = `
-    <div class="pdf-viewer-stage">
-      <div class="viewer-toolbar">
-        <button onclick="window.history.back()">← Back to Gallery</button>
-        <span class="doc-title">${title}</span>
-        <a href="${url}" download class="btn-direct-download">Download PDF</a>
-      </div>
-      <object data="${url}#view=FitH" type="application/pdf" class="pdf-object">
-        <p>Your browser cannot display this PDF. <a href="${url}">Download it instead.</a></p>
-      </object>
-    </div>
-  `;
+export function openPdfViewer(url, title) {
+  // 1. Get the Shell (The Structural Container from Region 5)
+  const viewerContainer = document.querySelector('.pdf-viewer-container');
+  const iframe = viewerContainer?.querySelector('iframe');
+  const titleDisplay = viewerContainer?.querySelector('.viewer-title');
+
+  if (!viewerContainer || !iframe) {
+    console.error("PDF Viewer structure not found in DOM");
+    hideSpinner();
+    return;
+  }
+
+  // 2. Set the Content (The Skin/Data)
+  iframe.src = url;
+  if (titleDisplay) titleDisplay.textContent = title || 'Document Viewer';
+
+  // 3. Activate the Structure (Triggers display: flex !important)
+  viewerContainer.classList.add('active');
+
+  // 4. Cleanup UX
+  // Hide spinner once the iframe has at least started communicating
+  iframe.onload = () => {
+    hideSpinner();
+  };
+
+  // 5. Handle the Close Button
+  const closeBtn = viewerContainer.querySelector('.btn-close-viewer');
+  closeBtn?.onclick = () => {
+    closePdfViewer();
+  };
+}
+
+export function closePdfViewer() {
+  const viewerContainer = document.querySelector('.pdf-viewer-container');
+  const iframe = viewerContainer?.querySelector('iframe');
+
+  if (viewerContainer) {
+    viewerContainer.classList.remove('active'); // Back to display: none
+    if (iframe) iframe.src = ''; // Kill the stream to save memory
+  }
 }
