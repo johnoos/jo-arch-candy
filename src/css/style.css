@@ -362,6 +362,12 @@ footer {
   /* Hide by default for Mobile */
   display: none;
 }
+#content-panel-container button, 
+.doc-card__actions button {
+    pointer-events: auto !important;
+    position: relative; /* Ensures it participates in the stacking context */
+    z-index: 10;        /* Pulls it above the card's background */
+}
 
 @media (max-width: 767px) {
   .top-panel {
@@ -520,20 +526,21 @@ header {
   overflow: hidden;
   position: relative;
 }
-
-.doc-card__actions {
-  display: flex;
-  gap: 10px;
-  margin-top: auto;
+.doc-card__actions { 
+  display: flex; 
+  gap: 10px; 
+  margin-top: auto;   /* Pushes buttons to the very bottom of the card */      position: relative; /* Essential: creates a stacking context for clicks */
+  z-index: 5;         /* Pulls buttons above the card background/image */
 }
-
-.btn-view,
-.btn-download {
-  height: 40px;
+.btn-view, .btn-download { 
+  height: 40px; 
+  flex: 1;            /* Makes buttons share the width equally */
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  cursor: pointer;    /* Vital: indicates it's interactive */
   border-radius: 6px;
   font-weight: 600;
-  display: flex;
-  align-items: center;
   justify-content: center;
   cursor: pointer;
   border: none;
