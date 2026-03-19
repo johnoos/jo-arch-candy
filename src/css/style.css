@@ -176,7 +176,7 @@ header {
   min-height: 0;
   /* Ensuring the flex-child can shrink/scroll */
   position: relative;
-  z-index: 1;
+  z-index: 1;         /* Sits below the sidebar and PDF viewer */
   /* Keeps the entire stage below the header/footer */
   overflow: hidden;
   /* Clip the PDF to this box */
@@ -186,6 +186,7 @@ header {
   padding-bottom: 5rem;
   width: 100%;
   scrollbar-width: thin;
+  pointer-events: auto !important;
 }
 
 #content-panel-container::-webkit-scrollbar {
@@ -203,18 +204,16 @@ header {
   height: 100vh;
   padding-top: env(safe-area-inset-top);
   /* Fix for 'notch' phones */
-  z-index: 900;
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
+  width: 250px;
   transform: translateX(-100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: var(--color-rail-bg);
   visibility: hidden;
   /* Prevent ghost clicks when closed */
   overflow: auto;
-
   display: flex;
   flex-direction: column;
   /* WISDOM: Ensure the list starts at the very top, not centered */
@@ -224,6 +223,9 @@ header {
   overflow-y: auto;
   /* Allows scrolling if items exceed screen height */
   -webkit-overflow-scrolling: touch;
+  z-index: 10001;
+  /* THE MAGIC LINE: This prevents it from blocking clicks when closed */
+  visibility: hidden;
 }
 
 .navig-rail-container__list {
@@ -238,16 +240,11 @@ header {
   gap: 0.5rem;
   margin: 0;
 }
-
-#navig-rail-container.open {
-  transform: translateX(0);
-  visibility: visible;
-}
-
+#navig-rail-container.open,
 #navig-rail-container.active {
   transform: translateX(0);
+  visibility: visible; /* Make it interactive only when open */
 }
-
 /* #endregion */
 
 /* #region Skin (Decor) */
@@ -545,6 +542,7 @@ header {
   cursor: pointer;
   border: none;
   text-decoration: none;
+  pointer-events: auto !important;
 }
 
 /* #endregion */
