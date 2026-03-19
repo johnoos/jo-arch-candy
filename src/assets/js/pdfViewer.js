@@ -1,25 +1,20 @@
-// pdfViewer.js
 export function openPdfViewer(url, title = 'Document Viewer') {
   const stage = document.getElementById('content-panel-container');
-  if (!stage) return;
+  
+  // 1. Update History (Fixes the Back Button)
+  window.history.pushState({ path: 'pdf', url, title }, '', `#view/${title.slugify()}`);
 
-  // Track history so the hardware 'Back' button works
-  window.history.pushState({ path: 'pdf-view', url, title }, '', `#pdf/${title.replace(/\s+/g, '-')}`);
-
+  // 2. Inject the Viewer Shell
   stage.innerHTML = `
-    <div class="pdf-stage-wrapper">
+    <div class="pdf-viewer-stage">
       <div class="viewer-toolbar">
-        <button class="btn-back-to-gallery">← Back</button>
-        <span class="viewer-title">${title}</span>
-        <a href="${url}" download class="btn-download-pdf">Download</a>
+        <button onclick="window.history.back()">← Back to Gallery</button>
+        <span class="doc-title">${title}</span>
+        <a href="${url}" download class="btn-direct-download">Download PDF</a>
       </div>
-      <iframe 
-        src="https://docs.google.com{encodeURIComponent(url)}&embedded=true" 
-        class="pdf-iframe" 
-        frameborder="0">
-      </iframe>
+      <object data="${url}#view=FitH" type="application/pdf" class="pdf-object">
+        <p>Your browser cannot display this PDF. <a href="${url}">Download it instead.</a></p>
+      </object>
     </div>
   `;
-
-  stage.querySelector('.btn-back-to-gallery').onclick = () => window.history.back();
 }
