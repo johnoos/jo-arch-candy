@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Check for Download Buttons (If you want JS to handle these too)
     const downloadBtn = e.target.closest('.btn-download');
     if (downloadBtn) return;
-  }
+  });
   // At the bottom of your DOMContentLoaded block
   const pdfViewer = document.querySelector('.pdf-viewer-container');
 

@@ -27,10 +27,8 @@ export function openPdfViewer(url, title) {
 
   // 5. Handle the Close Button
   const closeBtn = viewerContainer.querySelector('.btn-close-viewer');
-  closeBtn?.onclick = () => {
-    closePdfViewer();
+  closeBtn?.addEventListener('click', closePdfViewer, { once: true });
   };
-}
 
 export function closePdfViewer() {
   const viewerContainer = document.querySelector('.pdf-viewer-container');
